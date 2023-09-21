@@ -2,20 +2,36 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Entity\Character;
+use App\Repository\CharacterRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CharacterController extends AbstractController
 {
-    #[Route('/character', name: 'app_character')]
-    public function index(): Response
-    {
-        $characters = ['Mark Evans',"Jack Wallside", "Byron Love", "Axel Blaze", "Kevin Dragonfly","Nathan Swift"];
 
-        return $this->render('index.html.twig',array(
-            'characters' => $characters
-        ));
+    private $em;
+    public function __construct(EntityManagerInterface $em) 
+    {
+        $this->em = $em;
+    }
+
+
+    #[Route('/character', name: 'characters')]
+    public function index(): response
+    {   
+
+        //findall() -   SELECT * FROM movies;
+        $repository = $this->em->getRepository(Character::class);
+        $characters = $repository->findOneBy([]);
+
+
+        dd($characters);
+
+        return $this->render('index.html.twig');
+
     }
 }
