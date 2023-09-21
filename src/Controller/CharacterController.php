@@ -25,11 +25,6 @@ class CharacterController extends AbstractController
     {   
 
         //findall() -   SELECT * FROM movies;
-        $repository = $this->em->getRepository(Character::class);
-        $characters = $repository->findOneBy([]);
-
-
-        dd($characters);
 
         return $this->render('index.html.twig');
 
