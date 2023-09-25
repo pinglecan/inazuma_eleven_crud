@@ -1,0 +1,41 @@
+{% extends "./base.html.twig" %}
+
+{% block body %}
+    <div class="sm:w-3/5 w-4/5 mx-auto">
+        <h1 class="pt-20 sm:text-5xl md:text-7xl text-4xl font-bold text-center">
+            {{ character.title }}
+        </h1>
+
+        <div class="py-10 text-center">
+            <div class="inline-block sm:pt-1">
+                <h2 class="font-bold">
+                    Created by: Pingle
+                </h2>
+
+                <p class="text-sm text-gray-600">
+                    28-01-2022 4 min. read
+                </p>
+            </div>
+        </div>
+
+        <img
+            src="{{ character.image }}"
+            style="width:350px" height="597px"
+            class="rounded-xl shadow-xl mx-auto"
+            alt=""
+            
+        />
+
+        <a 
+            href="/edit/{{ character.id }}"
+            class="mx-auto bg-green-500 font-bold py-2 px-4 ml-96 rounded transition-all hover:bg-green-300">
+            Edit Character
+        </a>
+
+        <a 
+            href="/delete/{{ character.id }}"
+            class="mx-auto bg-red-500 font-bold py-2 px-4 ml-10 rounded transition-all hover:bg-red-300">
+            Delete Character
+        </a>
+    </div>
+{% endblock %}
