@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request; 
+use App\Entity\Character;
 
 class CharacterController extends AbstractController
 {
@@ -31,6 +32,17 @@ class CharacterController extends AbstractController
 
         return $this->render('characters/index.html.twig', [
             'characters' => $characters
+        ]);
+    }
+
+    #[Route("/characters/create", name:"create_movie")]
+    public function create(): Response
+    {
+        $character = new Character();
+        $form = $this->createForm(CharacterFormType::class, $character);
+
+        return $this->render('characters/create.html.twig',[
+            'form' => $form->createView()
         ]);
     }
 
