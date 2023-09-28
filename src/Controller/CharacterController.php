@@ -130,6 +130,15 @@ class CharacterController extends AbstractController
     }
 
 
+    #[Route('/delete/{id}', methods: ['GET', 'DELETE'], name: 'delete_character')]
+    public function delete($id): Response
+    {
+        $character = $this->characterRepository->find($id);
+        $this->em->remove($character);
+        $this->em->flush();
+        return $this->redirectToRoute('characters');
+    }
+
     #[Route("/characters/{id}", methods: ['GET'], name: 'character')]
     public function show($id): Response
     {

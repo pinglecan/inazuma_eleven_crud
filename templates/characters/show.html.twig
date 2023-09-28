@@ -33,9 +33,10 @@
         </a>
 
         <a 
-            href="character/delete/{{ character.id }}"
+            href="/delete/{{ character.id }}"
             class="mx-auto bg-red-500 font-bold py-2 px-4 ml-10 rounded transition-all hover:bg-red-300">
             Delete Character
         </a>
+        {{ character.team }}
     </div>
 {% endblock %}
