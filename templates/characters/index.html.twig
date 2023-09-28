@@ -25,9 +25,10 @@
         {% for character in characters %}
             <div class="text-center pt-8 pb-4">
                 <img
-                    src="{{ character.image }}"
+                    src="{{ character.image }}" width="350" height="597"
+
                     alt=""
-                    class="shadow-xl rounded-md "
+                    class="shadow-xl rounded-md mx-auto"
                 />
 
                 <h2 class="text-gray-700 font-bold text-3xl py-2">
@@ -35,7 +36,7 @@
                 </h2>
 
                 <span class="text-gray-500">
-                    By <span class="italic text-sm text-gray-800">Code With Dary | 28.01.2022
+                    By <span class="italic text-sm text-gray-800">Pingle| 28.01.2022
                 </span>
                 <br><br><br><br><br><br>
                 <a href="/characters/{{ character.id }}" class="uppercase border border-gray-500 text-gray-600 text-lg py-4 px-12 rounded transition transition-all hover:bg-gray-800 hover:text-white">
