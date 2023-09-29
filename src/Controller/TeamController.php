@@ -2,26 +2,25 @@
 
 namespace App\Controller;
 
-use App\Form\CharacterFormType;
-use App\Repository\CharacterRepository;
+use App\Form\TeamFormType;
 use App\Repository\TeamRepository;
-use App\Entity\Characters;
+use App\Repository\CharacterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request; 
-use App\Entity\Character;
+use App\Entity\Team;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class CharacterController extends AbstractController
+class TeamController extends AbstractController
 {
 
     private $em;
-    private $characterRepository;
-    public function __construct(CharacterRepository $characterRepository, EntityManagerInterface $em) 
+    private $teamRepository;
+    public function __construct(TeamRepository $teamRepository, EntityManagerInterface $em) 
     {
-        $this->characterRepository = $characterRepository;
+        $this->teamRepository = $teamRepository;
         $this->em = $em;
     }
 
@@ -37,25 +36,25 @@ class CharacterController extends AbstractController
 
 
 
-    #[Route('/characters', methods: ['GET'], name: 'characters')]
+    #[Route('/teams', methods: ['GET'], name: 'teams')]
     public function index(): Response
     {
-        $characters = $this->characterRepository->findAll();
+        $teams = $this->teamRepository->findAll();
 
-        return $this->render('./characters/index.html.twig', [
-            'characters' => $characters
+        return $this->render('./teams/index.html.twig', [
+            'teams' => $teams
         ]);
     }
 
-    #[Route("/character/create/new", name:"create_character")]
+    #[Route("/teams/create", name:"create_team")]
     public function create(Request $request): Response
     {
-        $character = new Character();
-        $form = $this->createForm(CharacterFormType::class, $character);
+        $team = new Team();
+        $form = $this->createForm(TeamFormType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form -> isValid()) {
-            $newCharacter = $form->getData();
+            $newTeam = $form->getData();
 
             $image = $form->get('image')->getData();
             if($image) {
@@ -70,42 +69,39 @@ class CharacterController extends AbstractController
                     return new response($e ->getMessage());
                 }
 
-                $newCharacter ->setImage('/uploads/' . $newFileName);
+                $newTeam ->setImage('/uploads/' . $newFileName);
             }
             
-            $this->em->persist($newCharacter);
+            $this->em->persist($newTeam);
             $this->em->flush();
 
-            return $this ->redirectToroute('characters');
+            return $this ->redirectToroute('teams');
 
         }
-        
-        if ($form->isSubmitted() && $form->isValid()) { 
-            
-        }
+    
 
-        return $this->render('characters/create.html.twig',[
+        return $this->render('teams/create.html.twig',[
             'form' => $form->createView()
         ]);
     }
 
 
-    #[Route('/characters/edit/{id}', name:'edit_character')]
+    #[Route('/teams/edit/{id}', name:'edit_team')]
     public function edit($id, Request $request): Response
     {
-        $character = $this->characterRepository->find($id);
-        $form = $this->createForm(CharacterFormType::class, $character);
+        $team = $this->teamRepository->find($id);
+        $form = $this->createForm(TeamFormType::class, $team);
         $form->handleRequest($request);
         $image = $form-> get('image')->getData();    
 
         if ($form->isSubmitted() && $form->isValid()){
             if ($image) { 
-                if($character->getImage() !== null){
+                if($team->getImage() !== null){
                     if(file_exists(
-                        $this->getParameter('kernel.project_dir') . '/public' . $character->getImage()
+                        $this->getParameter('kernel.project_dir') . '/public' . $team->getImage()
                     )){
 
-                        $this->getParameter('kernel.project_dir') . '/public' . $character->getImage();
+                        $this->getParameter('kernel.project_dir') . '/public' . $team->getImage();
                         $newFileName = uniqid() . '.' . $image->guessExtension();
 
                         try{
@@ -117,48 +113,48 @@ class CharacterController extends AbstractController
                             return new response($e ->getMessage());
                         }
 
-                        $character->setimage('/uploads/' . $newFileName);
+                        $team->setimage('/uploads/' . $newFileName);
                         $this->em->flush();
 
-                        return $this->redirectToRoute('characters');
+                        return $this->redirectToRoute('teams');
                     }
                 }
             }else{
                     
-                    $character->SetTitle($form->get('title')->getData());
-                    $character->setgender($form->get('gender')->getData());
-                    $character->setPosision($form->get('posision')->getdata());
-            
+                    foreach($form->get('characters')->getData() as $character){
+                        $team->addCharacter($character);
+                    }
+                    $this->em->persist($team);
                     $this->em->flush();
-                    return $this->redirectToRoute('characters');
+                    return $this->redirectToRoute('teams');
                 }      
 
         }
 
-        return $this->render('characters/edit.html.twig',[
-            'character' => $character,
+        return $this->render('teams/edit.html.twig',[
+            'team' => $team,
             'form' => $form->createView()
         ]);
     }
 
 
-    #[Route('/delete/{id}', methods: ['GET', 'DELETE'], name: 'delete_character')]
+    #[Route('/delete/{id}', methods: ['GET', 'DELETE'], name: 'delete_team')]
     public function delete($id): Response
     {
-        $character = $this->characterRepository->find($id);
-        $this->em->remove($character);
+        $team = $this->teamRepository->find($id);
+        $this->em->remove($team);
         $this->em->flush();
-        return $this->redirectToRoute('characters');
+        return $this->redirectToRoute('teams');
     }
 
-    #[Route("/character/{id}", methods: ['GET'], name: 'character')]
+    #[Route("/teams/{id}", methods: ['GET'], name: 'team')]
     public function show($id): Response
     {
     
-        $character = $this->characterRepository->find($id);
+        $team = $this->teamRepository->find($id);
 
-        return $this->render('characters/show.html.twig', [
-            'character' => $character
+        return $this->render('teams/show.html.twig', [
+            'team' => $team
         ]); 
     }
 }

@@ -22,11 +22,17 @@ class Team
     private ?string $image = null;
 
     #[ORM\ManyToMany(targetEntity: Character::class, mappedBy: 'teams')]
-    private Collection $teams;
+    private Collection $characters;
+
 
     public function __construct()
     {
-        $this->teams = new ArrayCollection();
+        $this->characters = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -47,7 +53,7 @@ class Team
     }
 
     public function getImage(): ?string
-    {
+    {   
         return $this->image;
     }
 
@@ -61,25 +67,26 @@ class Team
     /**
      * @return Collection<int, Character>
      */
-    public function getTeams(): Collection
+    public function getCharacters(): Collection
     {
-        return $this->teams;
+        return $this->characters;
     }
 
-    public function addTeam(Character $team): static
+    public function addCharacter(Character $character): static
     {
-        if (!$this->teams->contains($team)) {
-            $this->teams->add($team);
-            $team->addTeam($this);
+        if (!$this->characters->contains($character)) {
+            $this->characters->add($character);
+            $character->addTeam($this);
+            // dd($character);
         }
-
+        // dd($this);
         return $this;
     }
 
-    public function removeTeam(Character $team): static
+    public function removeCharacter(Character $character): static
     {
-        if ($this->teams->removeElement($team)) {
-            $team->removeTeam($this);
+        if ($this->characters->removeElement($character)) {
+            $character->removeTeam($this);
         }
 
         return $this;

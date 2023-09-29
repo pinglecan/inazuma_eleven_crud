@@ -6,6 +6,8 @@ use App\Repository\CharacterRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: CharacterRepository::class)]
 #[ORM\Table(name: '`character`')]
@@ -17,6 +19,7 @@ class Character
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
@@ -28,7 +31,7 @@ class Character
     #[ORM\Column(length: 2)]
     private ?string $posision = null;
 
-    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'teams')]
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'characters')]
     private Collection $teams;
 
     public function __construct()
@@ -90,26 +93,27 @@ class Character
     }
 
     /**
-     * @return Collection<int, Team>
+     * @return Collection<int, teams>
      */
     public function getTeams(): Collection
     {
         return $this->teams;
     }
 
-    public function addTeam(Team $team): static
+    public function addTeam(Team $teams): static
     {
-        if (!$this->teams->contains($team)) {
-            $this->teams->add($team);
+        if (!$this->teams->contains($teams)) {
+            $this->teams->add($teams);
         }
 
         return $this;
     }
 
-    public function removeTeam(Team $team): static
+    public function removeTeams(Team $teams): static
     {
-        $this->teams->removeElement($team);
+        $this->teams->removeElement($teams);
 
         return $this;
     }
+
 }
