@@ -42,7 +42,7 @@
         <div id="character bio" class="flex justify-center items-center">
             {{character.title}} is a {{character.gender}} <br>
             {{character.title}} is a {{character.posision}} <br>
-            {{character.title}} is apart of these team(s) <br>
+            {{character.title}} is apart of these team(s): <br>
             {% for team in character.teams %}
                 {{ team.name }}
                 <br>

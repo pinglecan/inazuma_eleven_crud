@@ -33,6 +33,7 @@ class TeamFormType extends AbstractType
                 'class' => Character::class,
                 'choice_label' => 'title',
                 'multiple' => true,
+                'by_reference' => false
             ]);
         
     }
