@@ -109,7 +109,7 @@ class Character
         return $this;
     }
 
-    public function removeTeams(Team $teams): static
+    public function removeTeam(Team $teams): static
     {
         $this->teams->removeElement($teams);
 

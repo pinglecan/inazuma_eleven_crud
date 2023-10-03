@@ -77,7 +77,6 @@ class Team
         if (!$this->characters->contains($character)) {
             $this->characters->add($character);
             $character->addTeam($this);
-            // dd($character);
         }
         // dd($this);
         return $this;

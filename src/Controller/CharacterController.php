@@ -129,6 +129,14 @@ class CharacterController extends AbstractController
                     $character->setgender($form->get('gender')->getData());
                     $character->setPosision($form->get('posision')->getdata());
             
+
+                    
+                                        
+                    foreach($form->get('teams')->getData() as $team){
+                        $character->addTeam($character);
+                    }
+                    $this->em->persist($character);
+
                     $this->em->flush();
                     return $this->redirectToRoute('characters');
                 }      

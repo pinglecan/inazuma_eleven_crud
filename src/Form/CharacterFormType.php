@@ -9,6 +9,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Team;
 
 class CharacterFormType extends AbstractType
 {
@@ -53,7 +55,12 @@ class CharacterFormType extends AbstractType
                 'required' => false,
                 'mapped' => false
             ))
-            //->add('teams')
+            ->add('teams', EntityType::class,[
+                'class' => team::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'by_reference' => false
+            ]);
         ;
     }
 
