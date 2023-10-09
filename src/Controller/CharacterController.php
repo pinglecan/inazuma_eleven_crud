@@ -123,17 +123,10 @@ class CharacterController extends AbstractController
                         return $this->redirectToRoute('characters');
                     }
                 }
-            }else{
-                    
-                    $character->SetTitle($form->get('title')->getData());
-                    $character->setgender($form->get('gender')->getData());
-                    $character->setPosision($form->get('posision')->getdata());
-            
-
-                    
+            }else{                   
                                         
                     foreach($form->get('teams')->getData() as $team){
-                        $character->addTeam($character);
+                        $character->addTeam($team);
                     }
                     $this->em->persist($character);
 

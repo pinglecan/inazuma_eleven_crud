@@ -138,7 +138,7 @@ class TeamController extends AbstractController
     }
 
 
-    #[Route('/delete/{id}', methods: ['GET', 'DELETE'], name: 'delete_team')]
+    #[Route('teams/delete/{id}', methods: ['GET', 'DELETE'], name: 'delete_team')]
     public function delete($id): Response
     {
         $team = $this->teamRepository->find($id);

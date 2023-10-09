@@ -78,7 +78,6 @@ class Team
             $this->characters->add($character);
             $character->addTeam($this);
         }
-        // dd($this);
         return $this;
     }
 

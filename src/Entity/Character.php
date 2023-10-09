@@ -104,6 +104,7 @@ class Character
     {
         if (!$this->teams->contains($teams)) {
             $this->teams->add($teams);
+            $teams->addCharacter($this);
         }
 
         return $this;
